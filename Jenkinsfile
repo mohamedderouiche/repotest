@@ -12,8 +12,8 @@ pipeline {
         NEXUS_USERNAME = "admin"
         NEXUS_PASSWORD = "nexus"
         ARTIFACT_PATH = "com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240410.025352-1.jar"
-        DOCKER_IMAGE_NAME = "rouamnissi/spring1"
-        DOCKER_HUB_CREDENTIALS = 'DockerRoua'
+        DOCKER_IMAGE_NAME = "mohamedaminederouiche05/springroua"
+        DOCKER_HUB_CREDENTIALS = 'docker'
         DOCKER_COMPOSE_VERSION = "1.29.2"
     }
 
@@ -105,10 +105,10 @@ pipeline {
             steps {
                 script {
                     // Perform Docker login
-                    sh 'docker login -u rouamnissi -p 123456789'
+                    sh 'docker login -u mohamedaminederouiche05 -p Rafaleao17'
 
                     // Pull the Docker image
-                    sh 'docker pull rouamnissi/spring1'
+                    sh 'docker pull mohamedaminederouiche05/springroua'
 
                     // Run Docker Compose
                     sh 'docker compose up -d'

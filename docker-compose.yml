@@ -3,7 +3,7 @@
 
   services:
     spring:
-      image: rouamnissi/spring1
+      image: mohamedaminederouiche05/springroua
       ports:
         - "8083:8083"
       environment:
