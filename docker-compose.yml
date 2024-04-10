@@ -3,15 +3,15 @@
 
   services:
     spring:
-      image: mohamedaminederouiche05/springroua
+      image: rouamnissi/springroua
       ports:
         - "8085:8085"
       environment:
-        - NEXUS_URL=http://192.168.1.21:8081/
-        - NEXUS_REPOSITORY=foyerrouaMnissi
+        - NEXUS_URL=http://192.168.1.19:8081/
+        - NEXUS_REPOSITORY=RouaRepo
         - NEXUS_USERNAME=admin
         - NEXUS_PASSWORD=123
-        - ARTIFACT_PATH=com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240410.091145-3.jar
+        - ARTIFACT_PATH=com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240410.130114-4.jar
         - SPRING_DATASOURCE_URL=jdbc:mysql://dbmysql:3306/brogramDB?createDatabaseIfNotExist=true&userSSL=false
         - SPRING_DATASOURCE_USERNAME=root
         - SPRING_DATASOURCE_PASSWORD=root
