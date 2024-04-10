@@ -1,0 +1,51 @@
+
+  version: '3.8'
+
+  services:
+    spring:
+      image: rouamnissi/spring1
+      ports:
+        - "8083:8083"
+      environment:
+        - NEXUS_URL=192.168.1.19:8081
+        - NEXUS_REPOSITORY=foyerrouaMnissi
+        - NEXUS_USERNAME=admin
+        - NEXUS_PASSWORD=123
+        - ARTIFACT_PATH=com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240409.223403-16.jar
+        - SPRING_DATASOURCE_URL=jdbc:mysql://dbmysql:3306/brogramDB?createDatabaseIfNotExist=true&userSSL=false
+        - SPRING_DATASOURCE_USERNAME=root
+        - SPRING_DATASOURCE_PASSWORD=root
+      depends_on:
+        - dbmysql
+
+
+    dbmysql:
+      image: "mysql:5.6"
+      container_name: my-dbmysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+      ports:
+        - "3305:3306"
+      restart: unless-stopped
+      volumes:
+        - db:/var/lib/mysql
+
+    prometheus:
+      image: prom/prometheus
+      ports:
+        - "9091:9090"
+      volumes:
+        - ./prometheus.yml:/etc/prometheus/Prometheus.yml
+
+    grafana:
+      image: grafana/grafana
+      ports:
+        - "3001:3000"
+      environment:
+        - GF_SECURITY_ADMIN_PASSWORD=grafana
+      volumes:
+        - grafana_data:/var/lib/grafana
+
+  volumes:
+    grafana_data:
+    db:
