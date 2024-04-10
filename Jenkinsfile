@@ -116,17 +116,17 @@ pipeline {
             }
         }
 
-        stage('Prometheus Setup') {
-            steps {
-                sh 'docker compose up -d prometheus'
-            }
-        }
+        // stage('Prometheus Setup') {
+        //     steps {
+        //         sh 'docker compose up -d prometheus'
+        //     }
+        // }
 
-        stage('Grafana Setup') {
-            steps {
-                sh 'docker compose up -d grafana'
-            }
-        }
+        // stage('Grafana Setup') {
+        //     steps {
+        //         sh 'docker compose up -d grafana'
+        //     }
+        // }
 
     }
 

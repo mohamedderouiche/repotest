@@ -30,21 +30,21 @@
       volumes:
         - db:/var/lib/mysql
 
-    prometheus:
-      image: prom/prometheus
-      ports:
-        - "9091:9090"
-      volumes:
-        - ./prometheus.yml:/etc/prometheus/Prometheus.yml
+    # prometheus:
+    #   image: prom/prometheus
+    #   ports:
+    #     - "9091:9090"
+    #   volumes:
+    #     - ./prometheus.yml:/etc/prometheus/Prometheus.yml
 
-    grafana:
-      image: grafana/grafana
-      ports:
-        - "3001:3000"
-      environment:
-        - GF_SECURITY_ADMIN_PASSWORD=grafana
-      volumes:
-        - grafana_data:/var/lib/grafana
+    # grafana:
+    #   image: grafana/grafana
+    #   ports:
+    #     - "3001:3000"
+    #   environment:
+    #     - GF_SECURITY_ADMIN_PASSWORD=grafana
+    #   volumes:
+    #     - grafana_data:/var/lib/grafana
 
   volumes:
     grafana_data:
