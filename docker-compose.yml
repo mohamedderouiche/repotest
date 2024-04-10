@@ -5,7 +5,7 @@
     spring:
       image: mohamedaminederouiche05/springroua
       ports:
-        - "8083:8083"
+        - "8085:8085"
       environment:
         - NEXUS_URL=http://192.168.1.21:8081/
         - NEXUS_REPOSITORY=foyerrouaMnissi
@@ -25,7 +25,7 @@
       environment:
         - MYSQL_ROOT_PASSWORD=root
       ports:
-        - "3305:3306"
+        - "3308:3306"
       restart: unless-stopped
       volumes:
         - db:/var/lib/mysql
