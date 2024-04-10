@@ -4,17 +4,17 @@ pipeline {
     environment {
         SNAP_REPO = 'FoyerRouamnissi-SNAPSHOT'
         RELEASE_REPO = 'foyerrouaMnissi'
-        NEXUS_IP = "192.168.1.19"
+        NEXUS_IP = "192.168.1.21"
         NEXUS_PORT = "8081"
-        NEXUS_LOGIN = "123"
-        NEXUS_URL = "192.168.1.19:8081" // Correction de l'URL Nexus
+        NEXUS_LOGIN = "nexus"
+        NEXUS_URL = "192.168.1.21:8081" // Correction de l'URL Nexus
         NEXUS_REPOSITORY = "foyerrouaMnissi"
         NEXUS_USERNAME = "admin"
-        NEXUS_PASSWORD = "123"
-        ARTIFACT_PATH = "com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240409.223403-16.jar"
-        DOCKER_IMAGE_NAME = "rouamnissi/spring1"
-        DOCKER_HUB_CREDENTIALS = 'docker'
-        DOCKER_COMPOSE_VERSION = "1.29.2"
+        NEXUS_PASSWORD = "nexus"
+        // ARTIFACT_PATH = "com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240409.223403-16.jar"
+        // DOCKER_IMAGE_NAME = "rouamnissi/spring1"
+        // DOCKER_HUB_CREDENTIALS = 'docker'
+        // DOCKER_COMPOSE_VERSION = "1.29.2"
     }
 
     stages {
@@ -78,55 +78,55 @@ pipeline {
             }
         }
 
-         stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image using the Dockerfile
-                    docker.build("${DOCKER_IMAGE_NAME}", "--build-arg NEXUS_URL=${NEXUS_URL} \
-                        --build-arg NEXUS_REPOSITORY=${NEXUS_REPOSITORY} \
-                        --build-arg NEXUS_USERNAME=${NEXUS_USERNAME} \
-                        --build-arg NEXUS_PASSWORD=${NEXUS_PASSWORD} \
-                        --build-arg ARTIFACT_PATH=${ARTIFACT_PATH} .")
-                }
-            }
-        }
+        //  stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             // Build the Docker image using the Dockerfile
+        //             docker.build("${DOCKER_IMAGE_NAME}", "--build-arg NEXUS_URL=${NEXUS_URL} \
+        //                 --build-arg NEXUS_REPOSITORY=${NEXUS_REPOSITORY} \
+        //                 --build-arg NEXUS_USERNAME=${NEXUS_USERNAME} \
+        //                 --build-arg NEXUS_PASSWORD=${NEXUS_PASSWORD} \
+        //                 --build-arg ARTIFACT_PATH=${ARTIFACT_PATH} .")
+        //         }
+        //     }
+        // }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_HUB_CREDENTIALS}") {
-                        docker.image("${DOCKER_IMAGE_NAME}").push()
-                    }
-                }
-            }
-        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_HUB_CREDENTIALS}") {
+        //                 docker.image("${DOCKER_IMAGE_NAME}").push()
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Run Docker Compose') {
-            steps {
-                script {
-                    // Perform Docker login
-                    sh 'docker login -u rouamnissi -p 123456789'
+        // stage('Run Docker Compose') {
+        //     steps {
+        //         script {
+        //             // Perform Docker login
+        //             sh 'docker login -u rouamnissi -p 123456789'
 
-                    // Pull the Docker image
-                    sh 'docker pull rouamnissi/spring1'
+        //             // Pull the Docker image
+        //             sh 'docker pull rouamnissi/spring1'
 
-                    // Run Docker Compose
-                    sh 'docker compose up -d'
-                }
-            }
-        }
+        //             // Run Docker Compose
+        //             sh 'docker compose up -d'
+        //         }
+        //     }
+        // }
 
-        stage('Prometheus Setup') {
-            steps {
-                sh 'docker compose up -d prometheus'
-            }
-        }
+        // stage('Prometheus Setup') {
+        //     steps {
+        //         sh 'docker compose up -d prometheus'
+        //     }
+        // }
 
-        stage('Grafana Setup') {
-            steps {
-                sh 'docker compose up -d grafana'
-            }
-        }
+        // stage('Grafana Setup') {
+        //     steps {
+        //         sh 'docker compose up -d grafana'
+        //     }
+        // }
 
     }
 
