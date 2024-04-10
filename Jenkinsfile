@@ -2,19 +2,19 @@ pipeline {
     agent any
 
     environment {
-        SNAP_REPO = 'FoyerRouamnissi-SNAPSHOT'
-        RELEASE_REPO = 'foyerrouaMnissi'
-        NEXUS_IP = "192.168.1.21"
+        SNAP_REPO = 'RouaRepo-SNAPSHOT'
+        RELEASE_REPO = 'RouaRepo'
+        NEXUS_IP = "192.168.1.19"
         NEXUS_PORT = "8081"
         NEXUS_LOGIN = "nexus"
-        NEXUS_URL = "192.168.1.21:8081" // Correction de l'URL Nexus
-        NEXUS_REPOSITORY = "foyerrouaMnissi"
+        NEXUS_URL = "192.168.1.19:8081" // Correction de l'URL Nexus
+        NEXUS_REPOSITORY = "RouaRepo"
         NEXUS_USERNAME = "admin"
-        NEXUS_PASSWORD = "nexus"
-        ARTIFACT_PATH = "com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240410.091145-3.jar"
-        DOCKER_IMAGE_NAME = "mohamedaminederouiche05/springroua"
-        DOCKER_HUB_CREDENTIALS = 'docker'
-        DOCKER_COMPOSE_VERSION = "1.29.2"
+        NEXUS_PASSWORD = "123"
+        // ARTIFACT_PATH = "com/example/FoyerRouamnissi/0.0.1-SNAPSHOT/FoyerRouamnissi-0.0.1-20240410.091145-3.jar"
+        // DOCKER_IMAGE_NAME = "mohamedaminederouiche05/springroua"
+        // DOCKER_HUB_CREDENTIALS = 'docker'
+        // DOCKER_COMPOSE_VERSION = "1.29.2"
     }
 
     stages {
@@ -56,65 +56,65 @@ pipeline {
             }
         }
 
-    //  stage("UploadArtifact") {
-    //         steps {
-    //             nexusArtifactUploader(
-    //                 nexusVersion: 'nexus3',
-    //                 protocol: 'http',
-    //                 nexusUrl: "${NEXUS_URL}",
-    //                 groupId: 'com.example',
-    //                 version: "0.0.1-SNAPSHOT",
-    //                 repository: 'foyerrouaMnissi',
-    //                 credentialsId: 'nexus',
-    //                 artifacts: [
-    //                     [
-    //                         artifactId: 'FoyerRouamnissi',
-    //                         classifier: '',
-    //                         file: 'target/FoyerRouamnissi-0.0.1-SNAPSHOT.jar',
-    //                         type: 'jar'
-    //                     ]
-    //                 ]
-    //             )
-    //         }
-    //     }
-
-         stage('Build Docker Image') {
+     stage("UploadArtifact") {
             steps {
-                script {
-                    // Build the Docker image using the Dockerfile
-                    docker.build("${DOCKER_IMAGE_NAME}", "--build-arg NEXUS_URL=${NEXUS_URL} \
-                        --build-arg NEXUS_REPOSITORY=${NEXUS_REPOSITORY} \
-                        --build-arg NEXUS_USERNAME=${NEXUS_USERNAME} \
-                        --build-arg NEXUS_PASSWORD=${NEXUS_PASSWORD} \
-                        --build-arg ARTIFACT_PATH=${ARTIFACT_PATH} .")
-                }
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${NEXUS_URL}",
+                    groupId: 'com.example',
+                    version: "0.0.1-SNAPSHOT",
+                    repository: 'RouaRepo',
+                    credentialsId: 'nexus',
+                    artifacts: [
+                        [
+                            artifactId: 'FoyerRouamnissi',
+                            classifier: '',
+                            file: 'target/FoyerRouamnissi-0.0.1-SNAPSHOT.jar',
+                            type: 'jar'
+                        ]
+                    ]
+                )
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_HUB_CREDENTIALS}") {
-                        docker.image("${DOCKER_IMAGE_NAME}").push()
-                    }
-                }
-            }
-        }
+        //  stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             // Build the Docker image using the Dockerfile
+        //             docker.build("${DOCKER_IMAGE_NAME}", "--build-arg NEXUS_URL=${NEXUS_URL} \
+        //                 --build-arg NEXUS_REPOSITORY=${NEXUS_REPOSITORY} \
+        //                 --build-arg NEXUS_USERNAME=${NEXUS_USERNAME} \
+        //                 --build-arg NEXUS_PASSWORD=${NEXUS_PASSWORD} \
+        //                 --build-arg ARTIFACT_PATH=${ARTIFACT_PATH} .")
+        //         }
+        //     }
+        // }
 
-        stage('Run Docker Compose') {
-            steps {
-                script {
-                    // Perform Docker login
-                    sh 'docker login -u mohamedaminederouiche05 -p Rafaleao17'
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_HUB_CREDENTIALS}") {
+        //                 docker.image("${DOCKER_IMAGE_NAME}").push()
+        //             }
+        //         }
+        //     }
+        // }
 
-                    // Pull the Docker image
-                    sh 'docker pull mohamedaminederouiche05/springroua'
+        // stage('Run Docker Compose') {
+        //     steps {
+        //         script {
+        //             // Perform Docker login
+        //             sh 'docker login -u mohamedaminederouiche05 -p Rafaleao17'
 
-                    // Run Docker Compose
-                    sh 'docker compose up -d'
-                }
-            }
-        }
+        //             // Pull the Docker image
+        //             sh 'docker pull mohamedaminederouiche05/springroua'
+
+        //             // Run Docker Compose
+        //             sh 'docker compose up -d'
+        //         }
+        //     }
+        // }
 
         // stage('Prometheus Setup') {
         //     steps {
